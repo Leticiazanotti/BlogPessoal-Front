@@ -4,7 +4,8 @@ interface UserLogin{
     usuario: string;
     foto: string;
     senha: string;
-    token?: string|null;
+    token?: string|null; // ? Ele tira a obrigatoriedade do preenchimento
+ 
 
 }
 

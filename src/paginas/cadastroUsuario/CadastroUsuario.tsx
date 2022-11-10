@@ -67,6 +67,7 @@ function CadastroUsuario() {
   useEffect(() => {
     if (userResult.id !== 0) {
       history('/login');
+      
     }
   }, [userResult]);
 return (
@@ -79,7 +80,7 @@ return (
                     <TextField value={user.nome} onChange={(event: ChangeEvent<HTMLInputElement>) => updateModel(event)} id='nome' label='nome' variant='outlined' name='nome' margin='normal' fullWidth />
                     <TextField value={user.usuario} onChange={(event: ChangeEvent<HTMLInputElement>)=> updateModel(event)}id='usuario' label='usuario' variant='outlined' name='usuario' margin='normal' fullWidth />
                     <TextField value={user.senha} onChange={(event: ChangeEvent<HTMLInputElement>) => updateModel(event)} id='senha' label='senha' variant='outlined' name='senha' margin='normal' type='password' fullWidth />
-                    <TextField value={confirmarSenha} onChange={(event: ChangeEvent<HTMLInputElement>) => updateModel(event)} id='confirmarSenha' label='confirmarSenha' variant='outlined' name='confirmarSenha' margin='normal'  type='password' fullWidth />
+                    <TextField value={confirmarSenha} onChange={(event: ChangeEvent<HTMLInputElement>) => confirmarSenhaHandle(event)} id='confirmarSenha' label='confirmarSenha' variant='outlined' name='confirmarSenha' margin='normal'  type='password' fullWidth />
                     <Box marginTop={2} textAlign='center'>
                         <Link to='/login' className='text-decorator-none' >
                         <Button variant='contained' color='secondary' className='btnCancelar'>
@@ -100,3 +101,9 @@ return (
 
 export default CadastroUsuario;
 
+//useSate - guardar algo temporariamente no backend, memoria temporaria
+//localStorage - memoria fixa
+//useEffect - efeito colateral 
+//updatedModel - função que atualiza o campo de formulario
+//setPostagens - Função que atualiza os dados postagens 
+//onChange - quando mudar algo acione essa função
