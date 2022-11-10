@@ -1,9 +1,4 @@
-.textos{
-    font-Weight:bold; 
-
-}
-
-.imagem{
+.imagem2{
     background-image:url(http://i.imgur.com/d5bMdDJ.jpg);
     background-repeat: 'no-repeat'; 
     width:100vh;
@@ -12,7 +7,11 @@
     background-position:center;
 }
 
-.text-decorator-none{
-    text-decoration: none;
+.textos2{
+    font-weight: bold !important; 
+}
+
+.btnCancelar{
+    margin-right: 20px !important;
 }
 
