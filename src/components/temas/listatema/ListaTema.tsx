@@ -72,7 +72,6 @@ let history = useNavigate()
                   </Button>
                 </Box>
               </Link>
-
               <Link to={`/apagarTema/${tema.id}`} className="text-decorator-none">
                 <Box mx={1}>
                   <Button variant="contained" size="small" color="error">
