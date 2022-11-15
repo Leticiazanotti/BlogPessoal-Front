@@ -3,45 +3,47 @@ import { useState, useEffect } from 'react';
 import {Box, Button, Card,CardActions,CardContent,Typography,} from '@mui/material';
 import Tema from '../../../models/Tema';
 import { busca } from '../../../services/Service';
-import useLocalStorage from 'react-use-localstorage';
 import './ListaTema.css';
+import { TokenState } from '../../../store/tokens/tokensReducer';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-
-function ListaTemas() {
-
-  
-
-const [token, setToken] = useLocalStorage('token');
-
-
-let history = useNavigate()
-  useEffect(() => {
-    if(token === '') {
-      alert('Você preisa estar logado pra ficar aqui')
-      history('/login')
-    }
-  }, [token])
-  
-
-
-  
-  const [temas, setTemas] = useState<Tema[]>([]);
-
-
-  async function buscaTema() {
-    await busca('/temas', setTemas, {
-      headers: {
-        Authorization: token
+  function ListaTemas() {
+    const [temas, setTemas] = useState<Tema[]>([])
+    let history = useNavigate();
+    const token = useSelector<TokenState, TokenState["tokens"]>(
+      (state) => state.tokens
+    );
+    useEffect(()=>{
+      if(token == ''){
+        toast.error('Você precisa estar logado', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "colored",
+          progress: undefined,
+          });
+          history("/login")
       }
-    })
-    
-  }
-
-
-  useEffect(() => {
-    buscaTema()
-  }, [temas.length])
-
+    }, [token])
+  
+  
+    async function getTema(){
+      await busca("/temas", setTemas, {
+        headers: {
+          'Authorization': token
+        }
+      })
+    }
+  
+  
+    useEffect(()=>{
+      getTema()
+    }, [temas.length])
+  
   return (
     <>
     {/* o Map irá percorrer o array de temas, e gerar um card novo para cada tema existente */}
@@ -87,6 +89,7 @@ let history = useNavigate()
     </>
   );
 }
+
 
 export default ListaTemas;
 

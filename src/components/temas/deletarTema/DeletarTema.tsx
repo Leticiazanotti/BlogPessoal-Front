@@ -4,6 +4,7 @@ import Tema from '../../../models/Tema';
 import { useNavigate, useParams } from 'react-router-dom';
 import useLocalStorage from 'react-use-localstorage';
 import { buscaId, deleteId } from '../../../services/Service';
+import { toast } from 'react-toastify';
 
 function DeletarTema() {
   let history = useNavigate();
@@ -12,13 +13,23 @@ function DeletarTema() {
   const [tema, setTema] = useState<Tema>()
   
 
-  useEffect(() => {
-      if (token === "") {
-          alert("Você precisa estar logado")
-          history("/login")
   
-      }
-  }, [token])
+  useEffect(() => {
+    if (token == "") {
+      toast.error('Você precisa estar logado', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "colored",
+        progress: undefined,
+        });
+        history("/login")
+
+    }
+}, [token])
 
   useEffect(() =>{
       if(id !== undefined){
@@ -26,28 +37,36 @@ function DeletarTema() {
       }
   }, [id])
 
-  async function findById(id: string) {
-      buscaId(`/temas/${id}`, setTema, {
-          headers: {
-          'Authorization': token
-          }
-      })
-      }
-      async function sim() {
-        await deleteId(`/temas/${tema?.id}`, {
-          headers: {
-            Authorization: token
-          }
-        })
-        alert('Tema apagado com sucesso')
-        history('/temas')
-      }
-    
-      function nao(){
-        history('/temas')
-      }
+      async function findById(id: string) {
+        buscaId(`/tema/${id}`, setTema, {
+            headers: {
+              'Authorization': token
+            }
+          })
+        }
 
-      
+        function sim() {
+            history('/temas')
+            deleteId(`/tema/${id}`, {
+              headers: {
+                'Authorization': token
+              }
+            });
+            toast.success('Tema deletado com sucesso', {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: false,
+              theme: "colored",
+              progress: undefined,
+              });
+          }
+        
+          function nao() {
+            history('/temas')
+          }
           
   return (
     <>

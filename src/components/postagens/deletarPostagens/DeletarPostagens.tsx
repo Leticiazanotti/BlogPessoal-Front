@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useLocalStorage from 'react-use-localstorage';
 import Postagem from '../../../models/Postagem';
 import { buscaId, deleteId } from '../../../services/Service';
+import { toast } from 'react-toastify';
 
 function DeletarPostagem() {
     let history = useNavigate();
@@ -11,13 +12,23 @@ function DeletarPostagem() {
     const [token, setToken] = useLocalStorage('token');
     const [postagem, setPostagens] = useState<Postagem>()
 
+   
     useEffect(() => {
-        if (token === "") {
-            alert("Você precisa estar logado")
-            history("/login")
-    
-        }
-    }, [token])
+      if (token == "") {
+        toast.error('Você precisa estar logado', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "colored",
+          progress: undefined,
+      });
+      history("/login")
+  
+      }
+  }, [token])
 
     useEffect(() =>{
         if(id !== undefined){
@@ -26,27 +37,34 @@ function DeletarPostagem() {
     }, [id])
 
     async function findById(id: string) {
-        buscaId(`/postagens/${id}`, setPostagens, {
+      buscaId(`/postagens/${id}`, setPostagens, {
+          headers: {
+            'Authorization': token
+          }
+        })
+      }
+
+      function sim() {
+        history('/postagens')
+          deleteId(`/postagens/${id}`, {
             headers: {
               'Authorization': token
             }
-          })
-        }
-        async function sim() {
-          try {
-            await deleteId(`/postagens/${id}`,  {
-              headers: {
-                Authorization: token,
-              },
-            });
-            alert('Postagem apagada com sucesso');
-          } catch (error) {
-            alert('Falha ao apagar a postagem');
-          }
+          });
+          toast.success('Postagem deletada com sucesso', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            theme: "colored",
+            progress: undefined,
+        });
         }
       
         function nao() {
-          history('/postagens');
+          history('/postagens')
         }
   return (
     <>

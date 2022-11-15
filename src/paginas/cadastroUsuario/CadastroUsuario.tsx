@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import User from '../../models/User';
 import { cadastroUsuario } from '../../services/Service';
 import './CadastroUsuario.css';
+import { toast } from 'react-toastify';
 
 function CadastroUsuario() {
   let history = useNavigate();
@@ -43,33 +44,33 @@ function CadastroUsuario() {
     });
   }
 
-  async function cadastrar(event: ChangeEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    
-    if (confirmarSenha === user.senha && user.senha.length >= 3) {
-      try {
-        await cadastroUsuario('/usuarios/cadastrar', user, setUserResult);
-        alert('Usuário cadastrado com sucesso'); 
-      } catch (error) {
-        alert('Falha interna ao cadastrar'); 
-      }
-    } else {
-      
-      alert('As senhas não conferem. Favor verificar novamente');
-
-      setUser({ ...user, senha: '' }); 
-      setConfirmarSenha(''); 
+  async function cadastrar(e: ChangeEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if(confirmarSenha == user.senha){
+    cadastroUsuario(`/usuarios/cadastrar`, user, setUserResult)
+    toast.success('Usuario cadastrado com sucesso', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: "colored",
+        progress: undefined,
+        });
+    }else{
+        toast.error('Dados inconsistentes. Favor verificar as informações de cadastro.', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            theme: "colored",
+            progress: undefined,
+            });
     }
-  }
-
-  
-  useEffect(() => {
-    if (userResult.id !== 0) {
-      history('/login');
-      
-    }
-  }, [userResult]);
+}
 return (
     <Grid container direction='row' justifyContent='center' alignItems='center'>
             <Grid item xs={6} className='imagem2'> </Grid>
